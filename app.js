@@ -39,8 +39,8 @@ app.use(function(err, req, res, next) {
   console.error(err.stack);
 
   return res.json({
-    // error: err,
-    message: err.message
+    message: err.message,
+    status: err.status
   });
 });
 

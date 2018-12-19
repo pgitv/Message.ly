@@ -11,6 +11,7 @@ class User {
 
   static async register({ username, password, first_name, last_name, phone }) {
     // Model does hashing and is not exposed to req.body or res.json
+    //TEST PASSED
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const result = await db.query(
@@ -19,13 +20,14 @@ class User {
       RETURNING username, password, first_name, last_name, phone`,
       [username, hashedPassword, first_name, last_name, phone]
     );
-    console.log('POST INSERT _________', result.rows[0]);
+    // console.log('POST INSERT _________', result.rows[0]);
     return result.rows[0];
   }
 
   /** Authenticate: is this username/password valid? Returns boolean. */
 
   static async authenticate(username, password) {
+    // TEST PASSED
     const result = await db.query(
       'SELECT password FROM users WHERE username = $1',
       [username]
@@ -85,13 +87,13 @@ class User {
 
   static async get(username) {
     const results = await db.query(
-      `SELECT username, first_name, last_name, phone, join_at, last_login_at at FROM users WHERE username = $1`,
+      `SELECT username, first_name, last_name, phone, join_at, last_login_at FROM users WHERE username = $1`,
       [username]
     );
     if (!results.rows[0]) {
       throw new Error(`No user found with the username: ${username}`);
     }
-    return results.row[0];
+    return results.rows[0];
   }
 
   /** Return messages from this user.

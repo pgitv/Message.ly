@@ -12,6 +12,7 @@ const { SECRET_KEY } = require('../config.js');
  **/
 
 router.post('/login', async function(req, res, next) {
+  // TEST PASSED
   try {
     const { username, password } = req.body;
     if (await User.authenticate(username, password)) {
@@ -35,6 +36,7 @@ router.post('/login', async function(req, res, next) {
  */
 
 router.post('/register', async function(req, res, next) {
+  // TEST PASSED
   try {
     const { username, password, first_name, last_name, phone } = req.body;
 

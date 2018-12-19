@@ -17,7 +17,7 @@ class Message {
               body,
               sent_at)
             VALUES ($1, $2, $3, current_timestamp)
-            RETURNING id, from_username, to_username, body, sent_at`,
+            RETURNING *;`,
       [from_username, to_username, body]
     );
 

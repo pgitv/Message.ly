@@ -27,11 +27,15 @@ function ensureCorrectUser(req, res, next) {
     if (payload.username === req.params.username) {
       // put username on request as a convenience for routes
       req.username = payload.username;
+
       return next();
     } else {
+      // console.log('This is in ENSURE CORRECT USER IN AUTH BEFORE THROW');
       throw new Error();
     }
   } catch (err) {
+    // console.log('This is in ENSURE CORRECT USER IN AUTH IN CATCH');
+
     return next({ status: 401, message: 'Unauthorized' });
   }
 }

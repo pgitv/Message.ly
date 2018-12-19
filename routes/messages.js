@@ -40,15 +40,23 @@ router.get('/:id', ensureSenderRecipient, ensureCorrectUser, async function(
  *
  **/
 router.post('/', ensureLoggedIn, async function(req, res, next) {
-  const token = req.body._token || req.query._token;
-  const { to_username, body } = req.body;
-  let { username } = jwt.verify(token, SECRET_KEY);
-  const confirm = await message.create({
-    from_username: username,
-    to_username,
-    body
-  });
-  return res.json({ message: confirm });
+  try {
+    const token = req.body._token || req.query._token;
+    const { to_username, body } = req.body;
+
+    let { username } = jwt.verify(token, SECRET_KEY);
+    // console.log('USERNAME ---', username, to_username, body);
+    const confirm = await message.create({
+      from_username: username,
+      to_username,
+      body
+    });
+    // console.log('I AM IN MESSAGES POST ------------');
+    return res.json({ message: confirm });
+  } catch (error) {
+    console.log(error);
+    return next(error);
+  }
 });
 
 /** POST/:id/read - mark message as read:
@@ -59,7 +67,7 @@ router.post('/', ensureLoggedIn, async function(req, res, next) {
  *
  **/
 
-router.post('/', ensureRecipient, ensureLoggedIn, async function(
+router.post('/:id/read', ensureRecipient, ensureLoggedIn, async function(
   req,
   res,
   next
